@@ -73,6 +73,7 @@ class App(CTK.CTk):
 
         self.text_frame = CTK.CTkFrame(master=self.frame_right)
         self.text_frame.rowconfigure(0, weight=1)
+        self.text_frame.rowconfigure(1, weight=15)
         self.text_frame.columnconfigure(0, weight=1)
         self.text_frame.grid(row=2, column=0, pady=10, padx=10, sticky="nswe")
 
@@ -80,9 +81,14 @@ class App(CTK.CTk):
         self.input_button = CTK.CTkButton(master=self.text_frame, text="Analyze Article", command=self.load_text)
         self.input_button.grid(row=1, column=0, pady=10, padx=10, sticky="we")
 
+        self.article_text_label = CTK.CTkLabel(master=self.text_frame,
+                                               text='Article Text:',
+                                               font=("Lucida Sans", -12))
+        self.article_text_label.grid(row=0, column=0, pady=5, padx=5, sticky='w')
+
         # Contains Article text
-        self.text_display = CTK.CTkTextbox(master=self.text_frame, corner_radius=5, font=("Lucida Sans", -12))
-        self.text_display.grid(row=0, column=0, pady=10, padx=10, sticky="nswe")
+        self.text_display = CTK.CTkTextbox(master=self.text_frame, corner_radius=5, font=("Lucida Sans", -16))
+        self.text_display.grid(row=1, column=0, pady=5, padx=5, sticky="nswe")
 
     # Collects title and text into variables and creates an analysis window
     def load_text(self):
