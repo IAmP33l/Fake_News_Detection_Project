@@ -18,13 +18,18 @@ URLS = re.compile(r"(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+"
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
+# gather the stop words into a list
 with open(STOP_WORDS_PATH, 'r') as f:
     stop_words = f.read()
     stop_words = stop_words.split(",")
     stop_words = [i.replace('"', "").strip() for i in stop_words]
 
-
 def clean_text(text):
+    """
+    Expands contractions, removes URLs and punctuation symbols and removes all stop words from text.
+    :param text: string
+    :return: cleaned_text string
+    """
 
     cleaned_text = [contractions.fix(word) for word in text.split()]
     cleaned_text = ' '.join(cleaned_text)
@@ -36,6 +41,10 @@ def clean_text(text):
 
 
 def load_model():
+    """
+    Loads pretrained pytorch model and maps the device to CPU
+    :return: BERT model torch object
+    """
     device = torch.device('cpu')
 
     model = BertForSequenceClassification.from_pretrained(
@@ -51,6 +60,9 @@ def load_model():
 
 
 def build_wordcloud(text, width, height):
+    """
+    Creates and returns a word cloud using input text and size specifications
+    """
     text_list = text.split()
     counts = Counter(text_list)
     wordcloud = WordCloud(background_color='black',
@@ -64,6 +76,11 @@ def build_wordcloud(text, width, height):
 
 
 def build_tf_graph(text):
+    """
+    Builds a term frequency data used to make a bar chart
+    :param text: cleaned_text string
+    :return: a 2 dimensional list: [[top 3 words], [frequency of the top 3 words]]
+    """
 
     text_list = text.split()
     counts = Counter(text_list)
@@ -84,6 +101,11 @@ def build_tf_graph(text):
 
 
 def build_probability_graph(probability):
+    """
+    calculates the confidence probability of a model's prediction
+    :param probability: the output of the models predictions run through a softmax layer
+    :return: a tuple (fake probability, true probability)
+    """
     zero_prob = probability[0].detach().numpy()
     one_prob = zero_prob[1]
     zero_prob = zero_prob[0]
@@ -93,11 +115,16 @@ def build_probability_graph(probability):
     return label_size
 
 
-def tokenize_map(sentence):
+def tokenize_map(article):
+    """
+    creates tokens to feed into the model for analysis
+    :param article: the entire cleaned text of a news article. String
+    :return: tokens for the model to read.
+    """
 
     input_ids = []
     attention_masks = []
-    for text in sentence:
+    for text in article:
         encoded_dict = tokenizer.encode_plus(
             text,
             add_special_tokens=True,  # [CLS] & [SEP]
@@ -116,6 +143,12 @@ def tokenize_map(sentence):
 
 
 def analyze(title, input_text):
+    """
+    builds all graph data and model predictions
+    :param title: Article title, string
+    :param input_text: Article text, string
+    :return: cleaned version of input text, Term Frequency data, a tuple of probabilities, and the model's prediction
+    """
     model = load_model()
     device = torch.device('cpu')
 

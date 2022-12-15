@@ -4,15 +4,18 @@ import analyze
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
-
+# define initial window themes
 CTK.set_appearance_mode("System")
 CTK.set_default_color_theme("green")
 
 # ============== DEFINE GUI WINDOW ============= #
 
 
+# Defining main window
 class App(CTK.CTk):
-
+    """
+    defines the main GUI window
+    """
     WIDTH = 780
     HEIGHT = 520
 
@@ -47,9 +50,7 @@ class App(CTK.CTk):
                                          font=("Lucida Sans", -16))
         self.window_label.grid(row=1, column=0, pady=10, padx=10)
 
-        self.style_label = CTK.CTkLabel(master=self.frame_left,
-                                        text="Style Options:",
-                                        font=("Lucida Sans", -12))
+        self.style_label = CTK.CTkLabel(master=self.frame_left, text="Style Options:", font=("Lucida Sans", -12))
         self.style_label.grid(row=9, column=0, pady=0, padx=10)
 
         self.style_optionmenu = CTK.CTkOptionMenu(self.frame_left,
@@ -64,6 +65,7 @@ class App(CTK.CTk):
         self.frame_right.rowconfigure(2, weight=10)
         self.frame_right.columnconfigure(0, weight=1)
 
+        # Text entry for Title
         self.text_entry = CTK.CTkEntry(master=self.frame_right,
                                        width=256,
                                        placeholder_text="Enter Article Title Here...")
@@ -74,17 +76,15 @@ class App(CTK.CTk):
         self.text_frame.columnconfigure(0, weight=1)
         self.text_frame.grid(row=2, column=0, pady=10, padx=10, sticky="nswe")
 
-        self.input_button = CTK.CTkButton(master=self.text_frame,
-                                          text="Analyze Article",
-                                          command=self.load_text)
+        # Calls Analysis functions and opens new window.
+        self.input_button = CTK.CTkButton(master=self.text_frame, text="Analyze Article", command=self.load_text)
         self.input_button.grid(row=1, column=0, pady=10, padx=10, sticky="we")
 
-        self.text_display = CTK.CTkTextbox(master=self.text_frame,
-                                           corner_radius=5,
-                                           font=("Lucida Sans", -12))
+        # Contains Article text
+        self.text_display = CTK.CTkTextbox(master=self.text_frame, corner_radius=5, font=("Lucida Sans", -12))
         self.text_display.grid(row=0, column=0, pady=10, padx=10, sticky="nswe")
 
-    # Collects text into variables and creates a confirmation dialogue window
+    # Collects title and text into variables and creates an analysis window
     def load_text(self):
         title = self.text_entry.get()
         text = self.text_display.get("0.0", "end")
@@ -110,9 +110,8 @@ class App(CTK.CTk):
                                    font=("Lucida Sans", -16))
         error_label.grid(row=0, column=0, pady=10, padx=10, sticky="nswe")
 
-        error_button = CTK.CTkButton(master=error_frame,
-                                     text="OK",
-                                     command=lambda: error_window.destroy())
+        # Confirmation button closes error window
+        error_button = CTK.CTkButton(master=error_frame, text="OK", command=lambda: error_window.destroy())
         error_button.grid(row=1, column=0, pady=10, padx=10, sticky="nswe")
 
         return
@@ -157,7 +156,7 @@ class App(CTK.CTk):
         graph_frame.columnconfigure(4, weight=1)
         graph_frame.grid(row=0, column=0, pady=10, padx=10, sticky="nswe", columnspan=2)
 
-        # == List of most common words in a wordcloud == #################
+        # == List of most common words in a wordcloud ========= #
         graph_1_frame = CTK.CTkFrame(master=graph_frame, corner_radius=5, border_width=2)
         graph_1_frame.grid(row=1, column=1, pady=5, padx=3, ipadx=10, ipady=10, sticky="nswe")
 
@@ -181,7 +180,7 @@ class App(CTK.CTk):
         toolbar_1.update()
         canvas_1.get_tk_widget().pack()
 
-        # ===== Histogram to display word frequency ==== #################
+        # ===== 3 Bar Barchart to display word frequency ======= #
         graph_2_frame = CTK.CTkFrame(master=graph_frame, corner_radius=5, border_width=2)
         graph_2_frame.grid(row=1, column=2, pady=5, padx=3, ipadx=10, ipady=10, sticky="nswe")
 
@@ -207,7 +206,7 @@ class App(CTK.CTk):
         toolbar_2.update()
         canvas_2.get_tk_widget().pack()
 
-        # == Pie Chart to display level of confidence == ################
+        # == Pie Chart to display level of confidence ======== #
         graph_3_frame = CTK.CTkFrame(master=graph_frame, corner_radius=5, border_width=2)
         graph_3_frame.grid(row=1, column=3, pady=5, padx=3, ipadx=10, ipady=10, sticky="nswe")
 
