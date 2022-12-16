@@ -74,12 +74,13 @@ class App(CTK.CTk):
         self.text_frame = CTK.CTkFrame(master=self.frame_right)
         self.text_frame.rowconfigure(0, weight=1)
         self.text_frame.rowconfigure(1, weight=15)
+        self.text_frame.rowconfigure(2, weight=1)
         self.text_frame.columnconfigure(0, weight=1)
         self.text_frame.grid(row=2, column=0, pady=10, padx=10, sticky="nswe")
 
         # Calls Analysis functions and opens new window.
         self.input_button = CTK.CTkButton(master=self.text_frame, text="Analyze Article", command=self.load_text)
-        self.input_button.grid(row=1, column=0, pady=10, padx=10, sticky="we")
+        self.input_button.grid(row=2, column=0, pady=10, padx=10, sticky="we")
 
         self.article_text_label = CTK.CTkLabel(master=self.text_frame,
                                                text='Article Text:',
@@ -166,7 +167,7 @@ class App(CTK.CTk):
         graph_1_frame = CTK.CTkFrame(master=graph_frame, corner_radius=5, border_width=2)
         graph_1_frame.grid(row=1, column=1, pady=5, padx=3, ipadx=10, ipady=10, sticky="nswe")
 
-        wordcloud_label = CTK.CTkLabel(text="Word Cloud of 15 important words",
+        wordcloud_label = CTK.CTkLabel(text="Word Cloud of 25 important words",
                                        font=("Lucida Sans", -20),
                                        master=graph_1_frame)
         wordcloud_label.pack()

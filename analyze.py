@@ -67,7 +67,7 @@ def build_wordcloud(text, width, height):
     counts = Counter(text_list)
     wordcloud = WordCloud(background_color='black',
                           width=width, height=height,
-                          max_words=15, relative_scaling=1)
+                          max_words=25, relative_scaling=1)
     plt.title('Important Words', fontsize=48)
 
     wordcloud_image = wordcloud.fit_words(counts)
