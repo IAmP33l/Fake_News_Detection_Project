@@ -147,6 +147,7 @@ class App(CTK.CTk):
 
         # ========== create analysis window ============ #
         analysis_window = CTK.CTkToplevel(self)
+        analysis_window.title('Analysis')
         analysis_window.geometry("1600x800")
         analysis_window.rowconfigure(0, weight=3)
         analysis_window.rowconfigure(1, weight=1)
